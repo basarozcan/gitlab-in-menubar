@@ -5,10 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.1] - 2026-02-18
 
 ### Added
 - Real-time search filter input in the main menu bar view
+- Close button added in settings window bottom bar
+- Add app icons
 
 ## [1.0.0] - 2026-02-16
 
@@ -30,5 +32,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Settings window with Connection, Projects, Filters, and General tabs
 - Close button in settings window bottom bar
 
-[Unreleased]: https://github.com/basarozcan/gitlab-mr-status/compare/v1.0.0...HEAD
+[1.0.1]: https://github.com/basarozcan/gitlab-mr-status/releases/tag/v1.0.1
 [1.0.0]: https://github.com/basarozcan/gitlab-mr-status/releases/tag/v1.0.0
