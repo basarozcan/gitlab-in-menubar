@@ -7,6 +7,12 @@ final class MRListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var lastRefresh: Date?
     @Published var errorMessage: String?
+    @Published var searchText: String = ""
+
+    var filteredMRs: [EnrichedMR] {
+        guard !searchText.isEmpty else { return enrichedMRs }
+        return enrichedMRs.filter { $0.mr.title.localizedCaseInsensitiveContains(searchText) }
+    }
 
     private let service = MergeRequestService()
     private var pollingTask: Task<Void, Never>?
