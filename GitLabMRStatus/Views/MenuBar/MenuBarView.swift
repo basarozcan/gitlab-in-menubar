@@ -19,7 +19,7 @@ struct MenuBarView: View {
             Text("Merge Requests")
                 .font(.headline)
             if !viewModel.enrichedMRs.isEmpty {
-                Text("\(viewModel.enrichedMRs.count)")
+                Text("\(viewModel.filteredMRs.count)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 6)
@@ -28,6 +28,27 @@ struct MenuBarView: View {
                     .cornerRadius(8)
             }
             Spacer()
+            HStack(spacing: 4) {
+                Image(systemName: "magnifyingglass")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                TextField("Filter...", text: $viewModel.searchText)
+                    .textFieldStyle(.plain)
+                    .font(.caption)
+                    .frame(width: 100)
+                if !viewModel.searchText.isEmpty {
+                    Button(action: { viewModel.searchText = "" }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.borderless)
+                }
+            }
+            .padding(.horizontal, 6)
+            .padding(.vertical, 3)
+            .background(.quaternary)
+            .cornerRadius(6)
             if viewModel.isLoading {
                 ProgressView()
                     .scaleEffect(0.6)
@@ -53,6 +74,8 @@ struct MenuBarView: View {
             emptyView
         } else if viewModel.enrichedMRs.isEmpty {
             loadingView
+        } else if viewModel.filteredMRs.isEmpty {
+            noSearchResultsView
         } else {
             mrListView
         }
@@ -61,9 +84,9 @@ struct MenuBarView: View {
     private var mrListView: some View {
         ScrollView {
             LazyVStack(spacing: 2) {
-                ForEach(viewModel.enrichedMRs) { enriched in
+                ForEach(viewModel.filteredMRs) { enriched in
                     MRRowView(enriched: enriched, showPipeline: viewModel.showPipelineInfo)
-                    if enriched.id != viewModel.enrichedMRs.last?.id {
+                    if enriched.id != viewModel.filteredMRs.last?.id {
                         Divider().padding(.leading, 26)
                     }
                 }
@@ -122,6 +145,18 @@ struct MenuBarView: View {
             ProgressView()
             Text("Loading...")
                 .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .padding(20)
+    }
+
+    private var noSearchResultsView: some View {
+        VStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .font(.title2)
+                .foregroundStyle(.secondary)
+            Text("No results for \"\(viewModel.searchText)\"")
+                .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
         .padding(20)
