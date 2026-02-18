@@ -33,6 +33,10 @@ struct SettingsView: View {
                         .foregroundStyle(.green)
                 }
                 Spacer()
+                Button("Close") {
+                    NSApp.keyWindow?.close()
+                }
+                .keyboardShortcut(.escape, modifiers: [])
                 Button("Save") {
                     viewModel.save()
                 }
