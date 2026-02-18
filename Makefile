@@ -7,9 +7,16 @@ EXPORT_PATH  = build/export
 APP_NAME     = GitLabMRStatus
 EXPORT_PLIST = ExportOptions.plist
 
-.PHONY: all build export zip release clean
+.PHONY: all run build export zip release clean
 
 all: build export zip
+
+run:
+	@echo "🏃 Building and running $(SCHEME)..."
+	@killall $(APP_NAME) 2>/dev/null || true
+	@BUILT_DIR=$$(xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Debug -showBuildSettings 2>/dev/null | awk '/^ *BUILT_PRODUCTS_DIR/{print $$NF; exit}') && \
+	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Debug build && \
+	open "$$BUILT_DIR/$(APP_NAME).app"
 
 build:
 	@echo "🔨 Building $(SCHEME)..."
