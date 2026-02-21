@@ -2,7 +2,7 @@ import Foundation
 import Security
 
 enum KeychainService {
-    private static let service = "com.basarozcan.GitLabMRStatus"
+    private static let service = "com.basarozcan.GitLabInMenubar"
 
     static func save(token: String, account: String = "default") throws {
         let data = Data(token.utf8)

@@ -1,5 +1,5 @@
 import XCTest
-@testable import GitLabMRStatus
+@testable import GitLabInMenubar
 
 final class ModelDecodingTests: XCTestCase {
 

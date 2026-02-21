@@ -37,7 +37,7 @@ To install the application, follow these steps:
 4. Drag the `GitLab in Menubar` application to your Applications folder.
 5. Run following command in terminal to allow this 3rd party app
    ```bash
-   xattr -cr /Applications/GitLabMRStatus.app
+   xattr -cr /Applications/GitLabInMenubar.app
    ```
 6. Launch the application from your Applications folder.
 
@@ -60,13 +60,13 @@ cd gitlab-mr-status
 xcodegen generate
 
 # Build
-xcodebuild -project GitLabMRStatus.xcodeproj -scheme GitLabMRStatus -configuration Debug build
+xcodebuild -project GitLabInMenubar.xcodeproj -scheme GitLabInMenubar -configuration Debug build
 
 # Run
-open "$(find ~/Library/Developer/Xcode/DerivedData/GitLabMRStatus-*/Build/Products/Debug/GitLabMRStatus.app -maxdepth 0)"
+open "$(find ~/Library/Developer/Xcode/DerivedData/GitLabInMenubar-*/Build/Products/Debug/GitLabInMenubar.app -maxdepth 0)"
 ```
 
-Or open `GitLabMRStatus.xcodeproj` in Xcode and run from there.
+Or open `GitLabInMenubar.xcodeproj` in Xcode and run from there.
 
 ### Configure
 
@@ -96,7 +96,7 @@ Or open `GitLabMRStatus.xcodeproj` in Xcode and run from there.
 
 ```bash
 xcodegen generate
-xcodebuild -project GitLabMRStatus.xcodeproj -scheme GitLabMRStatus -configuration Debug test
+xcodebuild -project GitLabInMenubar.xcodeproj -scheme GitLabInMenubar -configuration Debug test
 ```
 
 ## License

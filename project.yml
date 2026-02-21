@@ -1,4 +1,4 @@
-name: GitLabMRStatus
+name: GitLabInMenubar
 options:
   bundleIdPrefix: com.basarozcan
   deploymentTarget:
@@ -7,38 +7,39 @@ options:
   minimumXcodeGenVersion: "2.40"
 
 targets:
-  GitLabMRStatus:
+  GitLabInMenubar:
     type: application
     platform: macOS
     sources:
-      - GitLabMRStatus
+      - GitLabInMenubar
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.basarozcan.GitLabMRStatus
-        MARKETING_VERSION: "1.0.0"
+        PRODUCT_BUNDLE_IDENTIFIER: com.basarozcan.GitLabInMenubar
+        PRODUCT_NAME: GitLabInMenubar
+        MARKETING_VERSION: "1.0.2"
         CURRENT_PROJECT_VERSION: "1"
         SWIFT_VERSION: "6.0"
         MACOSX_DEPLOYMENT_TARGET: "13.0"
-        INFOPLIST_FILE: GitLabMRStatus/Info.plist
+        INFOPLIST_FILE: GitLabInMenubar/Info.plist
         GENERATE_INFOPLIST_FILE: false
-        CODE_SIGN_ENTITLEMENTS: GitLabMRStatus/GitLabMRStatus.entitlements
+        CODE_SIGN_ENTITLEMENTS: GitLabInMenubar/GitLabInMenubar.entitlements
         ENABLE_HARDENED_RUNTIME: true
         SWIFT_STRICT_CONCURRENCY: complete
     entitlements:
-      path: GitLabMRStatus/GitLabMRStatus.entitlements
+      path: GitLabInMenubar/GitLabInMenubar.entitlements
       properties:
         com.apple.security.app-sandbox: false
         com.apple.security.network.client: true
 
-  GitLabMRStatusTests:
+  GitLabInMenubarTests:
     type: bundle.unit-test
     platform: macOS
     sources:
-      - GitLabMRStatusTests
+      - GitLabInMenubarTests
     dependencies:
-      - target: GitLabMRStatus
+      - target: GitLabInMenubar
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.basarozcan.GitLabMRStatusTests
+        PRODUCT_BUNDLE_IDENTIFIER: com.basarozcan.GitLabInMenubarTests
         SWIFT_VERSION: "6.0"
         GENERATE_INFOPLIST_FILE: true

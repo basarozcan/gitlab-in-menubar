@@ -1,10 +1,10 @@
-VERSION ?= v1.0.1
+VERSION ?= v1.0.2
 
-SCHEME       = GitLabMRStatus
-PROJECT      = GitLabMRStatus.xcodeproj
-ARCHIVE_PATH = build/GitLabMRStatus.xcarchive
+SCHEME       = GitLabInMenubar
+PROJECT      = GitLabInMenubar.xcodeproj
+ARCHIVE_PATH = build/GitLabInMenubar.xcarchive
 EXPORT_PATH  = build/export
-APP_NAME     = GitLabMRStatus
+APP_NAME     = GitLabInMenubar
 EXPORT_PLIST = ExportOptions.plist
 
 .PHONY: all run build export zip release clean
