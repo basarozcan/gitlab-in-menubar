@@ -35,7 +35,6 @@ struct MenuBarView: View {
                 TextField("Filter...", text: $viewModel.searchText)
                     .textFieldStyle(.plain)
                     .font(.caption)
-                    .frame(width: 100)
                 if !viewModel.searchText.isEmpty {
                     Button(action: { viewModel.searchText = "" }) {
                         Image(systemName: "xmark.circle.fill")
@@ -45,6 +44,7 @@ struct MenuBarView: View {
                     .buttonStyle(.borderless)
                 }
             }
+            .frame(width: 120)
             .padding(.horizontal, 6)
             .padding(.vertical, 3)
             .background(.quaternary)
