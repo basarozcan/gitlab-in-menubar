@@ -34,7 +34,7 @@ To install the application, follow these steps:
 1. Download the latest ZIP release from the [GitHub releases page](https://github.com/basarozcan/gitlab-in-menubar/releases).
 2. Extract the ZIP file.
 3. Double-click the downloaded `.dmg` file to mount it.
-4. Drag the `GitLab MR Status` application to your Applications folder.
+4. Drag the `GitLab in Menubar` application to your Applications folder.
 5. Run following command in terminal to allow this 3rd party app
    ```bash
    xattr -cr /Applications/GitLabMRStatus.app
