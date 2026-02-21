@@ -28,7 +28,20 @@ Built with Swift and SwiftUI. No third-party dependencies.
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) (for generating the Xcode project)
 - A GitLab personal access token with `read_api` scope
 
-## Setup
+## Install Application
+To install the application, follow these steps:
+
+1. Download the latest ZIP release from the [GitHub releases page](https://github.com/basarozcan/gitlab-in-menubar/releases).
+2. Extract the ZIP file.
+3. Double-click the downloaded `.dmg` file to mount it.
+4. Drag the `GitLab MR Status` application to your Applications folder.
+5. Run following command in terminal to allow this 3rd party app
+   ```bash
+   xattr -cr /Applications/GitLabMRStatus.app
+   ```
+6. Launch the application from your Applications folder.
+
+## Setup for Development
 
 ### Install XcodeGen
 
