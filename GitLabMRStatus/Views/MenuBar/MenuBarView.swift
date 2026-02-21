@@ -11,7 +11,7 @@ struct MenuBarView: View {
             Divider()
             footer
         }
-        .frame(width: 420)
+        .frame(minWidth: 420, maxWidth: 420, minHeight: 400, maxHeight: 600)
     }
 
     private var header: some View {
@@ -66,19 +66,22 @@ struct MenuBarView: View {
 
     @ViewBuilder
     private var content: some View {
-        if !viewModel.isConfigured {
-            notConfiguredView
-        } else if let error = viewModel.errorMessage {
-            errorView(error)
-        } else if viewModel.enrichedMRs.isEmpty && viewModel.lastRefresh != nil {
-            emptyView
-        } else if viewModel.enrichedMRs.isEmpty {
-            loadingView
-        } else if viewModel.filteredMRs.isEmpty {
-            noSearchResultsView
-        } else {
-            mrListView
+        Group {
+            if !viewModel.isConfigured {
+                notConfiguredView
+            } else if let error = viewModel.errorMessage {
+                errorView(error)
+            } else if viewModel.enrichedMRs.isEmpty && viewModel.lastRefresh != nil {
+                emptyView
+            } else if viewModel.enrichedMRs.isEmpty {
+                loadingView
+            } else if viewModel.filteredMRs.isEmpty {
+                noSearchResultsView
+            } else {
+                mrListView
+            }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var mrListView: some View {
