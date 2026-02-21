@@ -44,6 +44,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Settings window with Connection, Projects, Filters, and General tabs
 - Close button in settings window bottom bar
 
-[1.0.2]: https://github.com/basarozcan/gitlab-mr-status/releases/tag/v1.0.2
-[1.0.1]: https://github.com/basarozcan/gitlab-mr-status/releases/tag/v1.0.1
-[1.0.0]: https://github.com/basarozcan/gitlab-mr-status/releases/tag/v1.0.0
+[1.0.2]: https://github.com/basarozcan/gitlab-in-menubar/releases/tag/v1.0.2
+[1.0.1]: https://github.com/basarozcan/gitlab-in-menubar/releases/tag/v1.0.1
+[1.0.0]: https://github.com/basarozcan/gitlab-in-menubar/releases/tag/v1.0.0
