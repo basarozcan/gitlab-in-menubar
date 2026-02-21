@@ -1,5 +1,7 @@
 # GitLab in Menubar
 
+![GitLab in Menubar Cover](GitlabInMenubar-cover.png)
+
 A native macOS menubar app that shows GitLab merge request statuses at a glance.
 
 Built with Swift and SwiftUI. No third-party dependencies.
