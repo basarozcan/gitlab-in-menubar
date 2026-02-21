@@ -24,7 +24,7 @@ final class SettingsWindowController {
             backing: .buffered,
             defer: false
         )
-        window.title = "GitLab MR Status Settings"
+        window.title = "GitLab in Menubar Settings"
         window.contentView = hostingView
         window.center()
         window.isReleasedWhenClosed = false

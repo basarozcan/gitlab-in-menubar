@@ -1,4 +1,4 @@
-# GitLab MR Status
+# GitLab in Menubar
 
 A native macOS menubar app that shows GitLab merge request statuses at a glance.
 
