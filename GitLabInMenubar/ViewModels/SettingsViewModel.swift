@@ -75,6 +75,7 @@ final class SettingsViewModel: ObservableObject {
         do {
             let user = try await service.testConnection(baseURL: gitlabURL, accessToken: accessToken)
             connectionStatus = .success(username: user.username)
+            UserDefaults.standard.set(user.username, forKey: UserDefaultsKeys.currentUserUsername)
         } catch {
             connectionStatus = .failed(error.localizedDescription)
         }

@@ -1,9 +1,23 @@
 import Foundation
 import SwiftUI
 
+enum MRTab: String, CaseIterable {
+    case myMRs = "myMRs"
+    case reviewing = "reviewing"
+
+    var label: String {
+        switch self {
+        case .myMRs: return "My MRs"
+        case .reviewing: return "Reviewing"
+        }
+    }
+}
+
 @MainActor
 final class MRListViewModel: ObservableObject {
     @Published var enrichedMRs: [EnrichedMR] = []
+    @Published var reviewerMRs: [EnrichedMR] = []
+    @Published var selectedTab: MRTab = .myMRs
     @Published var isLoading = false
     @Published var lastRefresh: Date?
     @Published var errorMessage: String?
@@ -12,6 +26,26 @@ final class MRListViewModel: ObservableObject {
     var filteredMRs: [EnrichedMR] {
         guard !searchText.isEmpty else { return enrichedMRs }
         return enrichedMRs.filter { $0.mr.title.localizedCaseInsensitiveContains(searchText) }
+    }
+
+    var filteredReviewerMRs: [EnrichedMR] {
+        guard !searchText.isEmpty else { return reviewerMRs }
+        return reviewerMRs.filter { $0.mr.title.localizedCaseInsensitiveContains(searchText) }
+    }
+
+    var activeFilteredMRs: [EnrichedMR] {
+        selectedTab == .reviewing ? filteredReviewerMRs : filteredMRs
+    }
+
+    var activeEnrichedMRs: [EnrichedMR] {
+        selectedTab == .reviewing ? reviewerMRs : enrichedMRs
+    }
+
+    func count(for tab: MRTab) -> Int {
+        switch tab {
+        case .myMRs: return enrichedMRs.count
+        case .reviewing: return reviewerMRs.count
+        }
     }
 
     private let service = MergeRequestService()
@@ -27,6 +61,7 @@ final class MRListViewModel: ObservableObject {
     @AppStorage(UserDefaultsKeys.filterAuthorUsername) var filterAuthorUsername: String = ""
     @AppStorage(UserDefaultsKeys.filterHideDrafts) var filterHideDrafts: Bool = false
     @AppStorage(UserDefaultsKeys.showPipelineInfo) var showPipelineInfo: Bool = true
+    @AppStorage(UserDefaultsKeys.currentUserUsername) var currentUserUsername: String = ""
 
     var projects: [ProjectConfig] {
         guard let data = UserDefaults.standard.data(forKey: UserDefaultsKeys.projectConfigs) else { return [] }
@@ -107,7 +142,7 @@ final class MRListViewModel: ObservableObject {
 
         do {
             let author: String? = filterAuthorUsername.isEmpty ? nil : filterAuthorUsername
-            let newMRs = try await service.fetchAllMRs(
+            async let myMRsFetch = service.fetchAllMRs(
                 projects: projects,
                 state: filterState,
                 scope: filterScope,
@@ -115,11 +150,25 @@ final class MRListViewModel: ObservableObject {
                 hideDrafts: filterHideDrafts
             )
 
+            let reviewer: String? = currentUserUsername.isEmpty ? nil : currentUserUsername
+            async let reviewerMRsFetch = reviewer != nil
+                ? service.fetchAllMRs(
+                    projects: projects,
+                    state: "opened",
+                    scope: "all",
+                    reviewerUsername: reviewer,
+                    hideDrafts: filterHideDrafts
+                )
+                : []
+
+            let (newMRs, newReviewerMRs) = try await (myMRsFetch, reviewerMRsFetch)
+
             if notificationsEnabled && !enrichedMRs.isEmpty {
                 detectChanges(old: enrichedMRs, new: newMRs)
             }
 
             enrichedMRs = newMRs
+            reviewerMRs = newReviewerMRs
             lastRefresh = Date()
         } catch {
             errorMessage = error.localizedDescription

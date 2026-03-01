@@ -61,6 +61,7 @@ actor MergeRequestService {
         state: String = "opened",
         scope: String = "all",
         authorUsername: String? = nil,
+        reviewerUsername: String? = nil,
         hideDrafts: Bool = false
     ) async throws -> [EnrichedMR] {
         try await withThrowingTaskGroup(of: [EnrichedMR].self) { group in
@@ -70,7 +71,8 @@ actor MergeRequestService {
                         projectId: project.projectId,
                         state: state,
                         scope: scope,
-                        authorUsername: authorUsername
+                        authorUsername: authorUsername,
+                        reviewerUsername: reviewerUsername
                     )
                     let filtered = hideDrafts ? mrs.filter { !$0.draft } : mrs
                     return await self.enrichMRs(filtered, projectName: project.name)
