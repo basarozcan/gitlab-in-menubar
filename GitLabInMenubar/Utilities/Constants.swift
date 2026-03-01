@@ -17,6 +17,7 @@ enum UserDefaultsKeys {
     static let filterAuthorUsername = "filterAuthorUsername"
     static let filterHideDrafts = "filterHideDrafts"
     static let showPipelineInfo = "showPipelineInfo"
+    static let currentUserUsername = "currentUserUsername"
 }
 
 enum MRFilterState: String, CaseIterable, Identifiable, Sendable {

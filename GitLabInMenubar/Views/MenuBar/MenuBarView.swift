@@ -15,53 +15,63 @@ struct MenuBarView: View {
     }
 
     private var header: some View {
-        HStack {
-            Text("Merge Requests")
-                .font(.headline)
-            if !viewModel.enrichedMRs.isEmpty {
-                Text("\(viewModel.filteredMRs.count)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(.quaternary)
-                    .cornerRadius(8)
-            }
-            Spacer()
-            HStack(spacing: 4) {
-                Image(systemName: "magnifyingglass")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                TextField("Filter...", text: $viewModel.searchText)
-                    .textFieldStyle(.plain)
-                    .font(.caption)
-                if !viewModel.searchText.isEmpty {
-                    Button(action: { viewModel.searchText = "" }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+        VStack(spacing: 6) {
+            HStack {
+                Text("Merge Requests")
+                    .font(.headline)
+                if !viewModel.activeEnrichedMRs.isEmpty {
+                    Text("\(viewModel.activeFilteredMRs.count)")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(.quaternary)
+                        .cornerRadius(8)
+                }
+                Spacer()
+                HStack(spacing: 4) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    TextField("Filter...", text: $viewModel.searchText)
+                        .textFieldStyle(.plain)
+                        .font(.caption)
+                    if !viewModel.searchText.isEmpty {
+                        Button(action: { viewModel.searchText = "" }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .buttonStyle(.borderless)
                     }
-                    .buttonStyle(.borderless)
+                }
+                .frame(width: 120)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 3)
+                .background(.quaternary)
+                .cornerRadius(6)
+                if viewModel.isLoading {
+                    ProgressView()
+                        .scaleEffect(0.6)
+                        .frame(width: 16, height: 16)
+                }
+                Button(action: { Task { await viewModel.refresh() } }) {
+                    Image(systemName: "arrow.clockwise")
+                }
+                .buttonStyle(.borderless)
+                .disabled(viewModel.isLoading)
+            }
+
+            Picker("", selection: $viewModel.selectedTab) {
+                ForEach(MRTab.allCases, id: \.self) { tab in
+                    Text(tab.label).tag(tab)
                 }
             }
-            .frame(width: 120)
-            .padding(.horizontal, 6)
-            .padding(.vertical, 3)
-            .background(.quaternary)
-            .cornerRadius(6)
-            if viewModel.isLoading {
-                ProgressView()
-                    .scaleEffect(0.6)
-                    .frame(width: 16, height: 16)
-            }
-            Button(action: { Task { await viewModel.refresh() } }) {
-                Image(systemName: "arrow.clockwise")
-            }
-            .buttonStyle(.borderless)
-            .disabled(viewModel.isLoading)
+            .pickerStyle(.segmented)
         }
         .padding(.horizontal, 12)
-        .padding(.vertical, 8)
+        .padding(.top, 8)
+        .padding(.bottom, 6)
     }
 
     @ViewBuilder
@@ -71,11 +81,13 @@ struct MenuBarView: View {
                 notConfiguredView
             } else if let error = viewModel.errorMessage {
                 errorView(error)
-            } else if viewModel.enrichedMRs.isEmpty && viewModel.lastRefresh != nil {
+            } else if viewModel.selectedTab == .reviewing && viewModel.currentUserUsername.isEmpty {
+                noUsernameView
+            } else if viewModel.activeEnrichedMRs.isEmpty && viewModel.lastRefresh != nil {
                 emptyView
-            } else if viewModel.enrichedMRs.isEmpty {
+            } else if viewModel.activeEnrichedMRs.isEmpty {
                 loadingView
-            } else if viewModel.filteredMRs.isEmpty {
+            } else if viewModel.activeFilteredMRs.isEmpty {
                 noSearchResultsView
             } else {
                 mrListView
@@ -87,9 +99,9 @@ struct MenuBarView: View {
     private var mrListView: some View {
         ScrollView {
             LazyVStack(spacing: 2) {
-                ForEach(viewModel.filteredMRs) { enriched in
+                ForEach(viewModel.activeFilteredMRs) { enriched in
                     MRRowView(enriched: enriched, showPipeline: viewModel.showPipelineInfo)
-                    if enriched.id != viewModel.filteredMRs.last?.id {
+                    if enriched.id != viewModel.activeFilteredMRs.last?.id {
                         Divider().padding(.leading, 26)
                     }
                 }
@@ -107,6 +119,21 @@ struct MenuBarView: View {
             Text("Not Configured")
                 .font(.subheadline)
             Text("Open Settings to add your GitLab URL, token, and projects.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding(20)
+    }
+
+    private var noUsernameView: some View {
+        VStack(spacing: 8) {
+            Image(systemName: "person.badge.plus")
+                .font(.title2)
+                .foregroundStyle(.secondary)
+            Text("Username not found")
+                .font(.subheadline)
+            Text("Open Settings and use \"Test Connection\" to detect your GitLab username.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -137,7 +164,9 @@ struct MenuBarView: View {
             Image(systemName: "checkmark.circle")
                 .font(.title2)
                 .foregroundStyle(.green)
-            Text("No open merge requests")
+            Text(viewModel.selectedTab == .reviewing
+                 ? "No MRs awaiting your review"
+                 : "No open merge requests")
                 .font(.subheadline)
         }
         .padding(20)

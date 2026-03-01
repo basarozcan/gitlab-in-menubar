@@ -47,6 +47,7 @@ actor GitLabAPIClient {
         state: String = "opened",
         scope: String = "all",
         authorUsername: String? = nil,
+        reviewerUsername: String? = nil,
         perPage: Int = AppConstants.maxMRsPerProject
     ) async throws -> [MergeRequest] {
         let path = "/api/v4/projects/\(projectId)/merge_requests"
@@ -59,6 +60,9 @@ actor GitLabAPIClient {
         ]
         if let authorUsername, !authorUsername.isEmpty {
             query["author_username"] = authorUsername
+        }
+        if let reviewerUsername, !reviewerUsername.isEmpty {
+            query["reviewer_username"] = reviewerUsername
         }
         return try await request(path: path, queryItems: query)
     }
