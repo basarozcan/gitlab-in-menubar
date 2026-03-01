@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-03-01
+
+### Added
+- Reviewing tab to display MRs where the current user is tagged as a reviewer
+- Count badge on each tab showing the total number of MRs in that tab
+
+### Changed
+- Tab selector replaced with full-width custom tab buttons spanning the entire popup width, each with an accent-colored underline indicator for the active tab
+
 ## [1.0.3] - 2026-02-21
 
 ### Changed
@@ -50,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Settings window with Connection, Projects, Filters, and General tabs
 - Close button in settings window bottom bar
 
+[1.1.0]: https://github.com/basarozcan/gitlab-in-menubar/releases/tag/v1.1.0
 [1.0.3]: https://github.com/basarozcan/gitlab-in-menubar/releases/tag/v1.0.3
 [1.0.2]: https://github.com/basarozcan/gitlab-in-menubar/releases/tag/v1.0.2
 [1.0.1]: https://github.com/basarozcan/gitlab-in-menubar/releases/tag/v1.0.1
