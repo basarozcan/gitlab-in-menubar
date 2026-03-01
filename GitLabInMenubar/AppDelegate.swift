@@ -7,7 +7,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
     private var contextMenu: NSMenu!
-    private let viewModel = MRListViewModel()
+    private let viewModel: MRListViewModel = {
+        #if MOCK_MODE
+        return MRListViewModel(service: MockMergeRequestService())
+        #else
+        return MRListViewModel()
+        #endif
+    }()
     private var cancellables = Set<AnyCancellable>()
 
     func applicationDidFinishLaunching(_ notification: Notification) {

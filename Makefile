@@ -7,7 +7,7 @@ EXPORT_PATH  = build/export
 APP_NAME     = GitLabInMenubar
 EXPORT_PLIST = ExportOptions.plist
 
-.PHONY: all run build export zip release clean
+.PHONY: all run run-mock build export zip release clean
 
 all: build export zip
 
@@ -16,6 +16,13 @@ run:
 	@killall $(APP_NAME) 2>/dev/null || true
 	@BUILT_DIR=$$(xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Debug -showBuildSettings 2>/dev/null | awk '/^ *BUILT_PRODUCTS_DIR/{print $$NF; exit}') && \
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Debug build && \
+	open "$$BUILT_DIR/$(APP_NAME).app"
+
+run-mock:
+	@echo "🧪 Building and running $(SCHEME) in mock mode..."
+	@killall $(APP_NAME) 2>/dev/null || true
+	@BUILT_DIR=$$(xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Mock -showBuildSettings 2>/dev/null | awk '/^ *BUILT_PRODUCTS_DIR/{print $$NF; exit}') && \
+	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Mock build && \
 	open "$$BUILT_DIR/$(APP_NAME).app"
 
 build:

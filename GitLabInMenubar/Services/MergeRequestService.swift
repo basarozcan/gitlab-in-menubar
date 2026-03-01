@@ -46,7 +46,7 @@ struct EnrichedMR: Identifiable, Sendable {
     }
 }
 
-actor MergeRequestService {
+actor MergeRequestService: MergeRequestServiceProtocol {
     private let apiClient = GitLabAPIClient()
 
     private var baseURL: String = ""

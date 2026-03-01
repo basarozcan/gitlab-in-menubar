@@ -14,10 +14,14 @@ final class MRListViewModel: ObservableObject {
         return enrichedMRs.filter { $0.mr.title.localizedCaseInsensitiveContains(searchText) }
     }
 
-    private let service = MergeRequestService()
+    private let service: any MergeRequestServiceProtocol
     private var pollingTask: Task<Void, Never>?
     private var settingsObserver: Any?
     private var didStart = false
+
+    init(service: any MergeRequestServiceProtocol = MergeRequestService()) {
+        self.service = service
+    }
 
     @AppStorage(UserDefaultsKeys.refreshIntervalSeconds) var refreshInterval: Double = AppConstants.defaultRefreshInterval
     @AppStorage(UserDefaultsKeys.notificationsEnabled) var notificationsEnabled: Bool = true
@@ -34,7 +38,11 @@ final class MRListViewModel: ObservableObject {
     }
 
     var isConfigured: Bool {
-        !gitlabBaseURL.isEmpty && KeychainService.retrieve() != nil && !projects.isEmpty
+        #if MOCK_MODE
+        return true
+        #else
+        return !gitlabBaseURL.isEmpty && KeychainService.retrieve() != nil && !projects.isEmpty
+        #endif
     }
 
     var menuBarSystemImage: String {
@@ -93,6 +101,25 @@ final class MRListViewModel: ObservableObject {
     }
 
     func refresh() async {
+        #if MOCK_MODE
+        isLoading = true
+        errorMessage = nil
+        do {
+            let newMRs = try await service.fetchAllMRs(
+                projects: [],
+                state: filterState,
+                scope: filterScope,
+                authorUsername: nil,
+                hideDrafts: filterHideDrafts
+            )
+            enrichedMRs = newMRs
+            lastRefresh = Date()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isLoading = false
+        return
+        #else
         guard isConfigured, let token = KeychainService.retrieve() else {
             if !gitlabBaseURL.isEmpty {
                 errorMessage = "Not configured. Open Settings to set up."
@@ -126,6 +153,7 @@ final class MRListViewModel: ObservableObject {
         }
 
         isLoading = false
+        #endif
     }
 
     private func detectChanges(old: [EnrichedMR], new: [EnrichedMR]) {
