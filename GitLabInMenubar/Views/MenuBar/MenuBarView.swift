@@ -15,7 +15,7 @@ struct MenuBarView: View {
     }
 
     private var header: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 0) {
             HStack {
                 Text("Merge Requests")
                     .font(.headline)
@@ -61,17 +61,46 @@ struct MenuBarView: View {
                 .buttonStyle(.borderless)
                 .disabled(viewModel.isLoading)
             }
+            .padding(.horizontal, 12)
+            .padding(.top, 8)
+            .padding(.bottom, 6)
 
-            Picker("", selection: $viewModel.selectedTab) {
+            HStack(spacing: 0) {
                 ForEach(MRTab.allCases, id: \.self) { tab in
-                    Text(tab.label).tag(tab)
+                    Button(action: { viewModel.selectedTab = tab }) {
+                        VStack(spacing: 4) {
+                            HStack(spacing: 5) {
+                                Text(tab.label)
+                                    .font(.subheadline)
+                                    .fontWeight(viewModel.selectedTab == tab ? .semibold : .regular)
+                                    .foregroundStyle(viewModel.selectedTab == tab ? .primary : .secondary)
+                                let count = viewModel.count(for: tab)
+                                if count > 0 {
+                                    Text("\(count)")
+                                        .font(.caption2)
+                                        .fontWeight(.medium)
+                                        .foregroundStyle(viewModel.selectedTab == tab ? Color.accentColor : .secondary)
+                                        .padding(.horizontal, 5)
+                                        .padding(.vertical, 2)
+                                        .background(
+                                            (viewModel.selectedTab == tab ? Color.accentColor : Color.secondary)
+                                                .opacity(0.12)
+                                        )
+                                        .cornerRadius(6)
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 6)
+                            Rectangle()
+                                .fill(viewModel.selectedTab == tab ? Color.accentColor : Color.clear)
+                                .frame(height: 2)
+                        }
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
                 }
             }
-            .pickerStyle(.segmented)
         }
-        .padding(.horizontal, 12)
-        .padding(.top, 8)
-        .padding(.bottom, 6)
     }
 
     @ViewBuilder

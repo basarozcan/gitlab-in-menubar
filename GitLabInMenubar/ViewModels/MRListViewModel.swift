@@ -41,6 +41,13 @@ final class MRListViewModel: ObservableObject {
         selectedTab == .reviewing ? reviewerMRs : enrichedMRs
     }
 
+    func count(for tab: MRTab) -> Int {
+        switch tab {
+        case .myMRs: return enrichedMRs.count
+        case .reviewing: return reviewerMRs.count
+        }
+    }
+
     private let service = MergeRequestService()
     private var pollingTask: Task<Void, Never>?
     private var settingsObserver: Any?
