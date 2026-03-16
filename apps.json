@@ -1,0 +1,63 @@
+{
+  "$schema": "https://wvw.dev/apps.schema.json",
+  "store": {
+    "name": "CBOsoft",
+    "developer": "Başar Özcan",
+    "tagline": "",
+    "github": "https://github.com/basarozcan"
+  },
+  "categories": [
+    {
+      "id": "macos",
+      "name": "macOS Apps"
+    },
+    {
+      "id": "productivity",
+      "name": "Productivity"
+    },
+    {
+      "id": "photo-video",
+      "name": "Photo & Video"
+    }
+  ],
+  "apps": [
+    {
+      "id": "radioheavy-captioneer",
+      "name": "GitLab in Menubar",
+      "developer": "Başar Özcan",
+      "subtitle": "A native macOS menubar app that shows GitLab merge request statuses at a glance.",
+      "description": "A native macOS menu bar app to monitor GitLab merge requests, pipelines, and reach your review requests instantly—right from the menu bar.",
+      "longDescription": "GitLab in Menubar is a lightweight macOS menu bar application that keeps your GitLab activity easily accessible without opening the browser. It lets you monitor merge requests, pipeline statuses, and quickly reach review requests directly from the menu bar. The app provides a color-coded pipeline status indicator and a clear overview of merge requests across your projects, including approvals, draft state, discussions, and pipeline results. With one click you can open any merge request or pipeline in GitLab, while background refresh and notifications help you stay updated on new activity and status changes so you can keep track of reviews and project progress without interrupting your workflow.",
+      "icon": "https://raw.githubusercontent.com/basarozcan/gitlab-in-menubar/refs/heads/main/GitLabInMenubar/Assets.xcassets/AppIcon.appiconset/icon_512x512.png",
+      "iconEmoji": "🔄",
+      "iconStyle": {
+        "scale": 1.3,
+        "objectFit": "cover",
+        "borderRadius": "20%"
+      },
+      "category": ["macos", "productivity", "developer-tools"],
+      "platform": "macOS",
+      "price": "Free",
+      "github": "https://github.com/basarozcan/gitlab-in-menubar",
+      "downloadUrl": "https://github.com/basarozcan/gitlab-in-menubar/releases/latest",
+      "language": "Swift",
+      "requirements": "macOS 15 Sequoia or later",
+      "features": [
+        "Menubar icon with color-coded status indicator based on pipeline health",
+        "MR list showing all open merge requests across configured projects",
+        "Pipeline status badges with colored background and icon (Passed, Running, Failed, Pending, etc.)",
+        "Click pipeline badge to open the pipeline page in GitLab",
+        "Click MR row to open the merge request in GitLab",
+        "Approval tracking showing received/required approval counts per MR",
+        "Thread tracking showing resolved/total resolvable discussion threads",
+        "Draft detection with visible DRAFT badge",
+        "Merge status labels (Conflict, Not Approved, CI Running, Blocked, etc.)",
+        "Auto-refresh in the background at a configurable interval (15s - 600s)",
+        "Notifications on pipeline status changes and new approvals",
+        "Filters by state (opened/merged/closed/all), scope (all/assigned to me/created by me), author username, and draft visibility",
+        "Secure token storage in macOS Keychain",
+        "Menubar-only - no dock icon"
+      ]
+    }
+  ]
+}
