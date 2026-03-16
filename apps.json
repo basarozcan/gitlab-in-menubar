@@ -22,7 +22,7 @@
   ],
   "apps": [
     {
-      "id": "radioheavy-captioneer",
+      "id": "basarozcan-gitlabinmenubar",
       "name": "GitLab in Menubar",
       "developer": "Başar Özcan",
       "subtitle": "A native macOS menubar app that shows GitLab merge request statuses at a glance.",
